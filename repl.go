@@ -36,7 +36,7 @@ func startRepl() {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func()
+	callback    func() error
 }
 
 func getCommands() map[string]cliCommand {
@@ -49,7 +49,7 @@ func getCommands() map[string]cliCommand {
 		"exit": {
 			name:        "exit",
 			description: "Exits the application",
-			callback:    func() { os.Exit(0) },
+			callback:    callbackExit,
 		},
 	}
 }
