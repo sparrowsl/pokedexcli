@@ -14,11 +14,18 @@ func startRepl() {
 	for {
 		fmt.Print("> ")
 		scanner.Scan()
+		text := scanner.Text()
 
-		if scanner.Text() == "exit" {
-			break
+		cleaned := cleanInput(text)
+		// print the > if no text is entered
+		if len(cleaned) == 0 {
+			continue
 		}
-		fmt.Println(scanner.Text())
+
+		// if scanner.Text() == "exit" {
+		// 	break
+		// }
+		fmt.Println(cleaned)
 	}
 }
 
