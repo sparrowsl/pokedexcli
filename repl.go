@@ -51,6 +51,11 @@ func getCommands() map[string]cliCommand {
 			description: "Exits the application",
 			callback:    callbackExit,
 		},
+		"map": {
+			name:        "map",
+			description: "List all the poke maps",
+			callback:    callbackMap,
+		},
 	}
 }
 
