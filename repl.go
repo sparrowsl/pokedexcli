@@ -22,10 +22,14 @@ func startRepl() {
 			continue
 		}
 
-		// if scanner.Text() == "exit" {
-		// 	break
-		// }
-		fmt.Println(cleaned)
+		command := cleaned[0]
+		// switch on commands and perform functions based on the name
+		switch command {
+		case "exit":
+			os.Exit(0)
+		default:
+			fmt.Println("Invalid command")
+		}
 	}
 }
 
