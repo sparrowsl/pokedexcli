@@ -25,6 +25,12 @@ func startRepl() {
 		command := cleaned[0]
 		// switch on commands and perform functions based on the name
 		switch command {
+		case "help":
+			fmt.Println("Welcome to the Pokedex help menu")
+			fmt.Println("Here are your available commands:")
+			fmt.Println(" - help")
+			fmt.Println(" - exit")
+			fmt.Println()
 		case "exit":
 			os.Exit(0)
 		default:
