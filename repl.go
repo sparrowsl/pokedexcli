@@ -16,7 +16,6 @@ func startRepl(cfg *config) {
 		text := scanner.Text()
 
 		cleaned := cleanInput(text)
-		// print the > if no text is entered
 		if len(cleaned) == 0 {
 			continue
 		}
@@ -29,7 +28,10 @@ func startRepl(cfg *config) {
 			fmt.Println("Invalid command")
 			continue
 		}
-		command.callback(cfg)
+
+		if err := command.callback(cfg); err != nil {
+			fmt.Println(err)
+		}
 	}
 }
 
@@ -55,6 +57,11 @@ func getCommands() map[string]cliCommand {
 			name:        "map",
 			description: "List all the poke maps",
 			callback:    callbackMap,
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "List all the previous poke maps",
+			callback:    callbackMapb,
 		},
 	}
 }
