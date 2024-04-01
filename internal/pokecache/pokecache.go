@@ -29,3 +29,14 @@ func (c *Cache) Get(key string) ([]byte, bool) {
 
 	return value.val, ok
 }
+
+// Delete all entries that are older than the interval
+func (c *Cache) reap(interval time.Duration) {
+	minutesAgo := time.Now().UTC().Add(-interval)
+
+	for k, v := range c.cache {
+		if v.createdAt.Before(minutesAgo) {
+			delete(c.cache, k)
+		}
+	}
+}
