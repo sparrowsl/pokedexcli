@@ -14,6 +14,20 @@ func (client *Client) ListLocationAreas(pageURL *string) (LocationAreasResponse,
 		endpoint = *pageURL
 	}
 
+	// check the cache if the current url has a value
+	data, ok := client.cache.Get(endpoint)
+	if ok {
+		// if cache exists for this URL, return the data instead of doing a network request
+		LocationAreasResp := LocationAreasResponse{}
+		// unmarshall the data into Go struct
+		err := json.Unmarshal(data, &LocationAreasResp)
+		if err != nil {
+			return LocationAreasResponse{}, nil
+		}
+
+		return LocationAreasResp, nil
+	}
+
 	// Make a GET request to the endpoint
 	req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
@@ -32,7 +46,7 @@ func (client *Client) ListLocationAreas(pageURL *string) (LocationAreasResponse,
 	}
 
 	// Read data from response body
-	data, err := io.ReadAll(response.Body)
+	data, err = io.ReadAll(response.Body)
 	if err != nil {
 		return LocationAreasResponse{}, nil
 	}
@@ -43,6 +57,10 @@ func (client *Client) ListLocationAreas(pageURL *string) (LocationAreasResponse,
 	if err != nil {
 		return LocationAreasResponse{}, nil
 	}
+
+	// before returning the data,
+	// save current data inside the cache
+	client.cache.Add(endpoint, data)
 
 	return LocationAreasResp, nil
 }
