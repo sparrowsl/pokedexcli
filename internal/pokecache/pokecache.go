@@ -40,3 +40,13 @@ func (c *Cache) reap(interval time.Duration) {
 		}
 	}
 }
+
+// Runs forever but does some operation based on given time
+// eg: deletes a cache entry after every 5 minutes.
+func (c *Cache) reapLoop(interval time.Duration) {
+	ticker := time.NewTicker(interval)
+
+	for range ticker.C {
+		c.reap(interval)
+	}
+}
