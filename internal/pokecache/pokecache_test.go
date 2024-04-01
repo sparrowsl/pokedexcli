@@ -3,7 +3,6 @@ package pokecache
 import "testing"
 
 func TestCreateCache(t *testing.T) {
-	// create new cache.
 	cache := NewCache()
 
 	if cache.cache == nil {
@@ -12,19 +11,36 @@ func TestCreateCache(t *testing.T) {
 }
 
 func TestAddGetCache(t *testing.T) {
+	testCases := []struct {
+		inputKey   string
+		inputvalue []byte
+	}{
+		{
+			inputKey:   "animal",
+			inputvalue: []byte("lion"),
+		},
+		{
+			inputKey:   "name",
+			inputvalue: []byte("john"),
+		},
+	}
+
 	cache := NewCache()
 
-	// Add to the cache
-	cache.Add("a", []byte("test"))
+	for _, cas := range testCases {
+		// Add to the cache
+		cache.Add(cas.inputKey, cas.inputvalue)
 
-	// test if value in cache.
-	actual, ok := cache.Get("a")
-	if !ok {
-		t.Errorf("a not found!")
+		// test if value in cache.
+		actual, ok := cache.Get(cas.inputKey)
+
+		if !ok {
+			t.Errorf("%s not found!", cas.inputKey)
+			continue
+		}
+
+		if string(actual) != string(cas.inputvalue) {
+			t.Errorf("Wanted %s, got %s", cas.inputvalue, actual)
+		}
 	}
-
-	if string(actual) != "test" {
-		t.Errorf("Wanted %s, got %s", []byte("test"), actual)
-	}
-
 }
