@@ -29,7 +29,7 @@ func startRepl(cfg *config) {
 			continue
 		}
 
-		if err := command.callback(cfg); err != nil {
+		if err := command.callback(cfg, cleaned[1:]...); err != nil {
 			fmt.Println(err)
 		}
 	}
@@ -38,7 +38,7 @@ func startRepl(cfg *config) {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, ...string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -62,6 +62,11 @@ func getCommands() map[string]cliCommand {
 			name:        "mapb",
 			description: "List all the previous poke maps",
 			callback:    callbackMapb,
+		},
+		"explore": {
+			name:        "explore [location_area]",
+			description: "List the pokemon in a location area",
+			callback:    callbackExplore,
 		},
 	}
 }
